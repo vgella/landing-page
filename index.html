@@ -98,3 +98,55 @@
 
     <!-- Chatbot Interface -->
     <div id="chat-container">
+        <div id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button id="submit-button"></button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const submitButton = document.getElementById('submit-button');
+
+        function appendMessage(sender, text) {
+            const messageElement = document.createElement('div');
+            messageElement.style.padding = "10px";
+            messageElement.style.borderRadius = "4px";
+            messageElement.style.marginBottom = "10px";
+            messageElement.style.backgroundColor = sender === 'User' ? '#e0f7fa' : '#f1f1f1';
+            messageElement.textContent = `${sender}: ${text}`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+        }
+
+        submitButton.addEventListener('click', () => {
+            const message = userInput.value;
+            if (message) {
+                appendMessage('User', message);
+                userInput.value = ''; // Clear input
+
+                // Send the message to the backend
+                fetch('https://a850-34-145-12-118.ngrok-free.app/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage('Mistral 7B', data.response);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    appendMessage('Error', 'There was an issue connecting to the server.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
