@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>testking</title>
+    <title>Thirdeye AI - Elevate Consciousness</title>
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f0f0f0;
+            overflow-x: hidden;
         }
 
         #logo-container {
@@ -20,78 +24,160 @@
             align-items: center;
             height: 100vh;
             width: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
+            animation: gradientShift 10s ease infinite;
+            color: black;
         }
 
-        img {
-            max-width: 100%;
-            max-height: 100%;
+        #logo-container img {
+            max-width: 400px;
+            animation: fadeInUp 2s ease-in-out;
         }
 
         #scroll-prompt {
             margin-top: 20px;
             font-size: 18px;
             color: #555;
+            cursor: pointer;
+            animation: bounce 2s infinite;
         }
 
         #chat-container {
-            width: 80%;
-            max-width: 800px;
-            margin-top: 50px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 50px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            transition: transform 0.5s ease-in-out;
+            transform: translateY(100vh);
+            opacity: 0;
+        }
+
+        .visible {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         #chat-box {
-            height: 500px;
-            padding: 20px;
+            padding-bottom: 20px;
             overflow-y: auto;
-            border-bottom: 1px solid #ddd;
+            max-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 16px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            color: #000;
+            animation: fadeInUp 0.3s ease-in-out;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: #e0e0e0;
+            text-align: right;
+        }
+
+        .message.ai {
+            align-self: flex-start;
         }
 
         #input-container {
             display: flex;
-            padding: 10px;
+            align-items: center;
+            padding-top: 20px;
+            width: 100%;
         }
 
         #user-input {
             flex: 1;
-            padding: 10px;
+            padding: 15px;
             border: none;
             outline: none;
-            border-radius: 4px;
+            font-size: 18px;
+            border-radius: 30px;
             background: #f0f0f0;
+            color: #000;
+            margin-right: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease-in-out;
+        }
+
+        #user-input:focus {
+            background: #e0e0e0;
         }
 
         #submit-button {
-            width: 40px;
-            height: 40px;
-            margin-left: 10px;
-            background: none;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6200ea, #bb86fc);
             border: none;
             outline: none;
             cursor: pointer;
-            transform: rotate(180deg); /* upside-down pyramid */
             border-radius: 50%;
-            background-color: #333;
+            color: white;
+            font-size: 24px;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
         }
 
-        #submit-button:before {
-            content: '▼';
-            color: white;
-            font-size: 20px;
+        #submit-button:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #submit-button {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Logo Section -->
     <div id="logo-container">
-        <img src="thirdeye_logo.svg" alt="Logo">
+        <img src="thirdeye_logo.svg" alt="Thirdeye AI Logo">
     </div>
 
     <div id="scroll-prompt">Scroll down to interact with our AI chatbot</div>
@@ -103,22 +189,27 @@
         </div>
         <div id="input-container">
             <input type="text" id="user-input" placeholder="Type a message..." />
-            <button id="submit-button"></button>
+            <button id="submit-button">&#x27A4;</button>
         </div>
     </div>
 
     <script>
+        const chatContainer = document.getElementById('chat-container');
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const submitButton = document.getElementById('submit-button');
 
+        // Reveal the chat container on scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                chatContainer.classList.add('visible');
+            }
+        });
+
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
-            messageElement.style.padding = "10px";
-            messageElement.style.borderRadius = "4px";
-            messageElement.style.marginBottom = "10px";
-            messageElement.style.backgroundColor = sender === 'User' ? '#e0f7fa' : '#f1f1f1';
-            messageElement.textContent = `${sender}: ${text}`;
+            messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
+            messageElement.textContent = text;
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
         }
@@ -129,22 +220,10 @@
                 appendMessage('User', message);
                 userInput.value = ''; // Clear input
 
-                // Send the message to the backend
-                fetch('https://d4a5-34-145-12-118.ngrok-free.app/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ message: message }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    appendMessage('Mistral 7B', data.response);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    appendMessage('Error', 'There was an issue connecting to the server.');
-                });
+                // Simulate a response from the AI for demonstration
+                setTimeout(() => {
+                    appendMessage('AI', 'This is a dummy response from the AI.');
+                }, 1000);
             }
         });
     </script>
