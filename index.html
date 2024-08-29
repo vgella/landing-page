@@ -16,8 +16,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        #logo-container {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #logo-container img {
+            max-width: 150px;
+            animation: fadeInDown 1s ease;
         }
 
         #chat-container {
@@ -25,7 +39,9 @@
             max-width: 600px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
+            padding: 40px 20px;
         }
 
         #chat-box {
@@ -36,6 +52,7 @@
             padding: 20px;
             margin-bottom: 15px;
             height: 300px;
+            width: 100%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -62,6 +79,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            width: 100%;
         }
 
         .input-field {
@@ -90,14 +108,47 @@
             background-color: #333;
         }
 
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 600px) {
             #chat-box {
                 height: 200px;
             }
         }
+
+        /* Parallax text */
+        #parallax-text {
+            position: fixed;
+            top: 50%;
+            right: -100px; /* Start off-screen */
+            font-size: 3rem;
+            color: #000;
+            transform: rotate(-90deg);
+            transform-origin: right center;
+            white-space: nowrap;
+            opacity: 0.1; /* Subtle effect */
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Logo Section -->
+    <div id="logo-container">
+        <img src="thirdeye_logo.svg" alt="Thirdeye AI Logo">
+    </div>
+
+    <!-- Parallax Text -->
+    <div id="parallax-text">elevate ai conscious</div>
 
     <!-- Chat Interface Container -->
     <div id="chat-container">
@@ -119,6 +170,7 @@
         const userInput = document.getElementById('user-input');
         const urlInput = document.getElementById('url-input');
         const submitButton = document.getElementById('submit-button');
+        const parallaxText = document.getElementById('parallax-text');
 
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
@@ -151,6 +203,12 @@
                     appendMessage('AI', 'We have noted your business URL.');
                 }, 1000);
             }
+        });
+
+        // Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
         });
     </script>
 </body>
