@@ -36,8 +36,8 @@
 
         #parallax-text {
             position: fixed;
-            top: 50%;
-            right: 10px;
+            top: 20%; /* Adjusted to make the full phrase visible */
+            right: 20px; /* Moved to the left */
             font-size: 6rem; /* Increased size */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
@@ -47,7 +47,6 @@
             white-space: nowrap;
             z-index: 2; 
             pointer-events: none;
-            transform: translateY(-50%) rotate(-90deg); /* Ensure visibility */
         }
 
         #chat-container {
@@ -111,18 +110,30 @@
         .input-field {
             flex-grow: 1; 
             padding: 15px;
-            border: 2px solid #000;
-            border-radius: 15px;
+            border: none; /* Removed outline */
             font-size: 16px;
             outline: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
             color: #000000;
             z-index: 6;
+            font-family: 'Arial', sans-serif;
+            box-shadow: none; /* No shadow, like a document */
         }
 
         .input-field::placeholder {
             color: #000000; 
+        }
+
+        #url-input {
+            width: 100%; /* Match width of chat box */
+            padding: 15px;
+            background-color: #000000; 
+            color: #ffffff; 
+            border-radius: 15px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; /* Add some margin below */
         }
 
         #submit-button {
@@ -170,7 +181,7 @@
     <!-- Chat Interface Container -->
     <div id="chat-container">
         <!-- Business URL Field -->
-        <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL..." style="background-color: black; color: white;"/>
+        <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL..." />
 
         <!-- Chat History -->
         <div id="chat-box">
