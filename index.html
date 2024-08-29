@@ -238,14 +238,18 @@
             if (message) {
                 appendMessage('User', message);
                 userInput.value = '';
-        
+                const separator = "§¶∆≈¥";
+                const combinedMessage = `${message}${separator}${businessUrl}`;
+
                 // Send the message to the backend
                 fetch('https://eed0-34-46-74-194.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: message }),
+                    body: JSON.stringify({ 
+                        message: combinedMessage
+                    }),
                 })
                 .then(response => response.json())
                 .then(data => {
