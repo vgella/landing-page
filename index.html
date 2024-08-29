@@ -36,9 +36,9 @@
 
         #parallax-text {
             position: fixed;
-            top: 10%; /* Moved up slightly to ensure full visibility */
+            top: 25%; /* Moved up slightly to ensure full visibility */
             right: 50px; /* Adjusted position slightly to the left */
-            font-size: 6rem; /* Keeping the size as is */
+            font-size: 5rem; /* Keeping the size as is */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
             color: #000;
@@ -56,14 +56,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 150px 20px; /* Added more padding to prevent overlap */
+            padding: 200px 20px 150px; /* Increased padding to prevent overlap */
             transform: translateY(0); 
             opacity: 1; 
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
             z-index: 3; 
             background-color: #ffffff; 
         }
-
         #chat-box {
             flex-grow: 1;
             width: 100%;
@@ -133,9 +132,9 @@
             font-size: 16px;
             outline: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px; /* Add some margin below */
+            margin-bottom: 20px; /* Add more margin below */
+            z-index: 4; /* Increased z-index to ensure it's on top */
         }
-
         #url-input::placeholder {
             color: #ffffff; /* Placeholder text in white */
         }
