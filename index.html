@@ -23,6 +23,7 @@
             justify-content: center;
             align-items: center;
             background-color: #ffffff;
+            z-index: 1; /* Ensure it is above the background */
         }
 
         #logo-container img {
@@ -33,15 +34,17 @@
         #parallax-text {
             position: fixed;
             top: 50%;
-            right: -100px;
+            right: 0px;
             font-size: 3rem;
             font-family: 'Times New Roman', serif;
             color: #000;
             transform: rotate(-90deg);
             transform-origin: right center;
             white-space: nowrap;
-            opacity: 0.1;
+            opacity: 1; /* Ensuring visibility */
             pointer-events: none;
+            z-index: 10; /* Higher z-index */
+            background-color: #ffffff; /* Ensure it has a background */
         }
 
         #chat-container {
@@ -53,13 +56,10 @@
             align-items: center;
             padding: 40px 20px;
             transform: translateY(100vh);
-            opacity: 0;
+            opacity: 1; /* Make sure it is visible */
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-        }
-
-        .visible {
-            transform: translateY(0);
-            opacity: 1;
+            z-index: 2; /* Ensure it is above background */
+            background-color: #ffffff; /* Ensure it has a background */
         }
 
         #chat-box {
@@ -72,6 +72,7 @@
             flex-direction: column;
             gap: 10px;
             color: black;
+            background-color: #ffffff;
         }
 
         .message {
@@ -83,6 +84,7 @@
             max-width: 80%;
             word-wrap: break-word;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 3;
         }
 
         .message.user {
@@ -101,6 +103,8 @@
             gap: 15px;
             margin-top: 20px;
             color: black;
+            z-index: 4; /* Ensuring it's above other elements */
+            background-color: #ffffff;
         }
 
         .input-field {
@@ -113,6 +117,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
             color: #000000;
+            z-index: 5;
         }
 
         .input-field::placeholder {
@@ -129,6 +134,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            z-index: 6;
         }
 
         #submit-button:hover {
@@ -162,7 +168,7 @@
     <div id="parallax-text">elevate ai conscious</div>
 
     <!-- Chat Interface Container -->
-    <div id="chat-container" class="visible"> <!-- Initially visible -->
+    <div id="chat-container" class="visible">
         <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
@@ -188,7 +194,7 @@
             messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
             messageElement.textContent = text;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         submitButton.addEventListener('click', () => {
@@ -213,9 +219,8 @@
 
             if (message) {
                 appendMessage('User', message);
-                userInput.value = ''; // Clear input
+                userInput.value = '';
 
-                // Simulate a response from the AI
                 setTimeout(() => {
                     appendMessage('AI', 'This is a dummy response from the AI.');
                 }, 1000);
@@ -223,9 +228,8 @@
 
             if (url) {
                 appendMessage('User', `URL entered: ${url}`);
-                urlInput.value = ''; // Clear input
+                urlInput.value = '';
 
-                // Simulate a response related to the URL
                 setTimeout(() => {
                     appendMessage('AI', 'We have noted your business URL.');
                 }, 1000);
@@ -240,9 +244,4 @@
 
         // Keep chat container visible without needing scroll trigger
         window.addEventListener('DOMContentLoaded', () => {
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.classList.add('visible');
-        });
-    </script>
-</body>
-</html>
+            const chatContainer = document.getElementById('chat-container
