@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thirdeye</title>
+    <title>Thirdeye AI - Chat Interface</title>
     <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -28,6 +28,20 @@
         #logo-container img {
             max-width: 50%;
             animation: fadeIn 1s ease;
+        }
+
+        #parallax-text {
+            position: fixed;
+            top: 50%;
+            right: -100px;
+            font-size: 3rem;
+            font-family: 'Times New Roman', serif;
+            color: #000;
+            transform: rotate(-90deg);
+            transform-origin: right center;
+            white-space: nowrap;
+            opacity: 0.1;
+            pointer-events: none;
         }
 
         #chat-container {
@@ -57,6 +71,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            color: black;
         }
 
         .message {
@@ -85,6 +100,7 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
+            color: black;
         }
 
         .input-field {
@@ -97,6 +113,10 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
             color: #000000;
+        }
+
+        .input-field::placeholder {
+            color: #000000; /* Ensure placeholder text is visible */
         }
 
         #submit-button {
@@ -138,6 +158,9 @@
         <img src="thirdeye_logo.svg" alt="Thirdeye AI Logo">
     </div>
 
+    <!-- Parallax Text -->
+    <div id="parallax-text">elevate ai conscious</div>
+
     <!-- Chat Interface Container -->
     <div id="chat-container" class="visible"> <!-- Initially visible -->
         <!-- Chat History -->
@@ -158,6 +181,7 @@
         const userInput = document.getElementById('user-input');
         const urlInput = document.getElementById('url-input');
         const submitButton = document.getElementById('submit-button');
+        const parallaxText = document.getElementById('parallax-text');
 
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
@@ -207,6 +231,12 @@
                 }, 1000);
             }
         }
+
+        // Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
+        });
 
         // Keep chat container visible without needing scroll trigger
         window.addEventListener('DOMContentLoaded', () => {
