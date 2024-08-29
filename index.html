@@ -36,19 +36,18 @@
 
         #parallax-text {
             position: fixed;
-            top: 50%; /* Centering "conscious" when the page loads */
-            right: 50px; /* Adjusted position */
-            font-size: 12rem; /* Increased text size */
+            top: 10%; /* Moved up slightly to ensure full visibility */
+            right: 50px; /* Adjusted position slightly to the left */
+            font-size: 6rem; /* Keeping the size as is */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
             color: #000;
-            transform: rotate(-90deg) translateY(100%); /* Initial transform to show "conscious" */
+            transform: rotate(-90deg);
             transform-origin: right center;
             white-space: nowrap;
             z-index: 2; 
             pointer-events: none;
         }
-
 
         #chat-container {
             width: 100%;
@@ -251,7 +250,7 @@
         // Reverse Parallax effect for the text
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
-            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
+            parallaxText.style.transform = `translateY(${scrolled * -0.5}px) rotate(-90deg)`;
         });
         // Scroll to top on load
         window.addEventListener('load', () => {
