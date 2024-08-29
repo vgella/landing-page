@@ -95,6 +95,8 @@
             font-size: 16px;
             outline: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            color: #000000;
         }
 
         #submit-button {
@@ -137,7 +139,7 @@
     </div>
 
     <!-- Chat Interface Container -->
-    <div id="chat-container">
+    <div id="chat-container" class="visible"> <!-- Initially visible -->
         <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
@@ -152,7 +154,6 @@
     </div>
 
     <script>
-        const chatContainer = document.getElementById('chat-container');
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const urlInput = document.getElementById('url-input');
@@ -207,12 +208,10 @@
             }
         }
 
-        // Show chat container on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            if (scrolled > window.innerHeight / 2) {
-                chatContainer.classList.add('visible');
-            }
+        // Keep chat container visible without needing scroll trigger
+        window.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.classList.add('visible');
         });
     </script>
 </body>
