@@ -36,8 +36,8 @@
 
         #parallax-text {
             position: fixed;
-            top: 10%; /* Adjusted to make the full phrase visible */
-            right: 50px; /* Moved to the left */
+            top: 15%; /* Adjusted to make the full phrase visible */
+            right: 40px; /* Adjusted position */
             font-size: 6rem; /* Increased size */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
@@ -228,7 +228,7 @@
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 businessUrl = urlInput.value;
-                appendMessage('AI', `Business URL entered: ${businessUrl}`);
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
                 urlInput.value = ''; // Clear the field after entry
             }
         });
@@ -241,7 +241,7 @@
                 userInput.value = '';
 
                 setTimeout(() => {
-                    appendMessage('AI', `This is a dummy response from the AI. Your business URL: ${businessUrl}`);
+                    appendMessage('AI', `This is a dummy response from the AI.`);
                 }, 1000);
             }
         }
