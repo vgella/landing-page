@@ -36,8 +36,8 @@
 
         #parallax-text {
             position: fixed;
-            top: 20%; /* Adjusted to make the full phrase visible */
-            right: 20px; /* Moved to the left */
+            top: 10%; /* Adjusted to make the full phrase visible */
+            right: 50px; /* Moved to the left */
             font-size: 6rem; /* Increased size */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
@@ -136,6 +136,10 @@
             margin-bottom: 10px; /* Add some margin below */
         }
 
+        #url-input::placeholder {
+            color: #ffffff; /* Placeholder text in white */
+        }
+
         #submit-button {
             padding: 15px;
             background-color: #000;
@@ -181,7 +185,7 @@
     <!-- Chat Interface Container -->
     <div id="chat-container">
         <!-- Business URL Field -->
-        <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL..." />
+        <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
 
         <!-- Chat History -->
         <div id="chat-box">
@@ -201,6 +205,7 @@
         const urlInput = document.getElementById('url-input');
         const submitButton = document.getElementById('submit-button');
         const parallaxText = document.getElementById('parallax-text');
+        let businessUrl = '';
 
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
@@ -222,8 +227,9 @@
 
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                // Track the input but do nothing for now
-                console.log('Business URL entered:', urlInput.value);
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business URL entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
             }
         });
 
@@ -235,7 +241,7 @@
                 userInput.value = '';
 
                 setTimeout(() => {
-                    appendMessage('AI', 'This is a dummy response from the AI.');
+                    appendMessage('AI', `This is a dummy response from the AI. Your business URL: ${businessUrl}`);
                 }, 1000);
             }
         }
