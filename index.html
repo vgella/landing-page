@@ -57,7 +57,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 20px; /* Added padding to prevent overlap */
+            padding: 150px 20px; /* Added more padding to prevent overlap */
             transform: translateY(0); 
             opacity: 1; 
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
@@ -111,15 +111,14 @@
         .input-field {
             flex-grow: 1; 
             padding: 15px;
-            border: none;
-            border-radius: 0;
+            border: 2px solid #000;
+            border-radius: 15px;
             font-size: 16px;
             outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
             color: #000000;
             z-index: 6;
-            font-family: 'Arial', sans-serif;
-            box-shadow: none; /* No shadow, like a document */
         }
 
         .input-field::placeholder {
@@ -171,7 +170,7 @@
     <!-- Chat Interface Container -->
     <div id="chat-container">
         <!-- Business URL Field -->
-        <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL..." />
+        <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL..." style="background-color: black; color: white;"/>
 
         <!-- Chat History -->
         <div id="chat-box">
@@ -193,4 +192,53 @@
         const parallaxText = document.getElementById('parallax-text');
 
         function appendMessage(sender, text) {
-            const m
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
+            messageElement.textContent = text;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        submitButton.addEventListener('click', () => {
+            submitChat();
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                // Track the input but do nothing for now
+                console.log('Business URL entered:', urlInput.value);
+            }
+        });
+
+        function submitChat() {
+            const message = userInput.value;
+
+            if (message) {
+                appendMessage('User', message);
+                userInput.value = '';
+
+                setTimeout(() => {
+                    appendMessage('AI', 'This is a dummy response from the AI.');
+                }, 1000);
+            }
+        }
+
+        // Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
+        });
+
+        // Scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
