@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thirdeye AI - Chat Interface</title>
-    <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -14,11 +13,12 @@
             color: #000000;
             overflow-x: hidden;
             overflow-y: auto;
+            scroll-behavior: smooth; /* Smooth scroll */
         }
 
         #logo-container {
             width: 100%;
-            height: 50vh; /* Reduced height for less scroll */
+            height: 100vh; /* Fullscreen */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,14 +34,14 @@
         #parallax-text {
             position: fixed;
             top: 50%;
-            right: -50px;
-            font-size: 5rem; /* Increased size */
+            right: 10px;
+            font-size: 5rem;
             font-family: 'Times New Roman', serif;
             color: #000;
             transform: rotate(-90deg);
             transform-origin: right center;
             white-space: nowrap;
-            opacity: 0.1;
+            opacity: 0.3;
             pointer-events: none;
             z-index: 10; 
         }
@@ -53,9 +53,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 20px; /* Reduced padding */
-            transform: translateY(0); /* Start at the top */
-            opacity: 1; /* Make sure it is visible */
+            padding: 20px 20px; 
+            transform: translateY(0); 
+            opacity: 1; 
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
             z-index: 2; 
             background-color: #ffffff; 
@@ -72,7 +72,7 @@
             gap: 10px;
             color: black;
             background-color: #ffffff;
-            margin-bottom: 10px; /* Space below the chat history */
+            margin-bottom: 10px;
         }
 
         .message {
@@ -108,7 +108,7 @@
         }
 
         .input-field {
-            flex-grow: 1; /* Fill remaining space */
+            flex-grow: 1; 
             padding: 15px;
             border: 2px solid #000;
             border-radius: 15px;
@@ -230,6 +230,11 @@
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
             parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg) scale(${1 + scrolled / 1000})`;
+        });
+
+        // Scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
         });
     </script>
 </body>
