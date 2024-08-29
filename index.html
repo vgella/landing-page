@@ -18,12 +18,12 @@
 
         #logo-container {
             width: 100%;
-            height: 100vh; /* Fullscreen */
+            height: 50vh; /* Reduced height for less scroll */
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #ffffff;
-            z-index: 1; /* Ensure it is above the background */
+            z-index: 1; 
         }
 
         #logo-container img {
@@ -34,17 +34,16 @@
         #parallax-text {
             position: fixed;
             top: 50%;
-            right: 0px;
-            font-size: 3rem;
+            right: -50px;
+            font-size: 5rem; /* Increased size */
             font-family: 'Times New Roman', serif;
             color: #000;
             transform: rotate(-90deg);
             transform-origin: right center;
             white-space: nowrap;
-            opacity: 1; /* Ensuring visibility */
+            opacity: 0.1;
             pointer-events: none;
-            z-index: 10; /* Higher z-index */
-            background-color: #ffffff; /* Ensure it has a background */
+            z-index: 10; 
         }
 
         #chat-container {
@@ -54,25 +53,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
-            transform: translateY(100vh);
+            padding: 20px 20px; /* Reduced padding */
+            transform: translateY(0); /* Start at the top */
             opacity: 1; /* Make sure it is visible */
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-            z-index: 2; /* Ensure it is above background */
-            background-color: #ffffff; /* Ensure it has a background */
+            z-index: 2; 
+            background-color: #ffffff; 
         }
 
         #chat-box {
             flex-grow: 1;
             overflow-y: auto;
             width: 100%;
-            max-height: 400px;
+            max-height: 300px;
             padding: 20px 0;
             display: flex;
             flex-direction: column;
             gap: 10px;
             color: black;
             background-color: #ffffff;
+            margin-bottom: 10px; /* Space below the chat history */
         }
 
         .message {
@@ -99,16 +99,16 @@
         #input-container {
             width: 100%;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
             color: black;
-            z-index: 4; /* Ensuring it's above other elements */
+            z-index: 4; 
             background-color: #ffffff;
         }
 
         .input-field {
-            width: 100%;
+            flex-grow: 1; /* Fill remaining space */
             padding: 15px;
             border: 2px solid #000;
             border-radius: 15px;
@@ -121,11 +121,10 @@
         }
 
         .input-field::placeholder {
-            color: #000000; /* Ensure placeholder text is visible */
+            color: #000000; 
         }
 
         #submit-button {
-            width: 100%;
             padding: 15px;
             background-color: #000;
             border: none;
@@ -168,7 +167,7 @@
     <div id="parallax-text">elevate ai conscious</div>
 
     <!-- Chat Interface Container -->
-    <div id="chat-container" class="visible">
+    <div id="chat-container">
         <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
@@ -209,13 +208,13 @@
 
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                submitChat();
+                // Track the input but do nothing for now
+                console.log('Business URL entered:', urlInput.value);
             }
         });
 
         function submitChat() {
             const message = userInput.value;
-            const url = urlInput.value;
 
             if (message) {
                 appendMessage('User', message);
@@ -225,23 +224,13 @@
                     appendMessage('AI', 'This is a dummy response from the AI.');
                 }, 1000);
             }
-
-            if (url) {
-                appendMessage('User', `URL entered: ${url}`);
-                urlInput.value = '';
-
-                setTimeout(() => {
-                    appendMessage('AI', 'We have noted your business URL.');
-                }, 1000);
-            }
         }
 
         // Parallax effect for the text
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
-            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
+            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg) scale(${1 + scrolled / 1000})`;
         });
-
-        // Keep chat container visible without needing scroll trigger
-        window.addEventListener('DOMContentLoaded', () => {
-            const chatContainer = document.getElementById('chat-container
+    </script>
+</body>
+</html>
