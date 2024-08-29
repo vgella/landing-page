@@ -251,9 +251,8 @@
         // Reverse Parallax effect for the text
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
-            parallaxText.style.transform = `rotate(-90deg) translateY(${100 - scrolled * 0.2}%)`;
+            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
         });
-
         // Scroll to top on load
         window.addEventListener('load', () => {
             window.scrollTo(0, 0);
