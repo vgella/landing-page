@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thirdeye AI - Samosa Chat Interface</title>
+    <title>Thirdeye AI - Chat Interface</title>
     <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -12,48 +12,51 @@
             font-family: 'Roboto', sans-serif;
             background-color: #ffffff;
             color: #000000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
         }
 
         #logo-container {
             width: 100%;
-            text-align: center;
-            padding: 20px 0;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 100vh; /* Fullscreen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
         }
 
         #logo-container img {
-            max-width: 150px;
-            animation: fadeInDown 1s ease;
+            max-width: 50%;
+            animation: fadeIn 1s ease;
         }
 
         #chat-container {
             width: 100%;
             max-width: 600px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 40px 20px;
+            transform: translateY(100vh);
+            opacity: 0;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .visible {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         #chat-box {
             flex-grow: 1;
             overflow-y: auto;
-            border: 2px solid #000;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            height: 300px;
             width: 100%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .message {
@@ -64,6 +67,7 @@
             color: #000;
             max-width: 80%;
             word-wrap: break-word;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .message.user {
@@ -76,10 +80,11 @@
         }
 
         #input-container {
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            width: 100%;
+            margin-top: 20px;
         }
 
         .input-field {
@@ -88,8 +93,8 @@
             border: 2px solid #000;
             border-radius: 15px;
             font-size: 16px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         #submit-button {
@@ -108,35 +113,19 @@
             background-color: #333;
         }
 
-        @keyframes fadeInDown {
+        @keyframes fadeIn {
             0% {
                 opacity: 0;
-                transform: translateY(-20px);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 
         @media (max-width: 600px) {
             #chat-box {
-                height: 200px;
+                max-height: 200px;
             }
-        }
-
-        /* Parallax text */
-        #parallax-text {
-            position: fixed;
-            top: 50%;
-            right: -100px; /* Start off-screen */
-            font-size: 3rem;
-            color: #000;
-            transform: rotate(-90deg);
-            transform-origin: right center;
-            white-space: nowrap;
-            opacity: 0.1; /* Subtle effect */
-            pointer-events: none;
         }
     </style>
 </head>
@@ -146,9 +135,6 @@
     <div id="logo-container">
         <img src="thirdeye_logo.svg" alt="Thirdeye AI Logo">
     </div>
-
-    <!-- Parallax Text -->
-    <div id="parallax-text">elevate ai conscious</div>
 
     <!-- Chat Interface Container -->
     <div id="chat-container">
@@ -166,11 +152,11 @@
     </div>
 
     <script>
+        const chatContainer = document.getElementById('chat-container');
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const urlInput = document.getElementById('url-input');
         const submitButton = document.getElementById('submit-button');
-        const parallaxText = document.getElementById('parallax-text');
 
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
@@ -181,6 +167,22 @@
         }
 
         submitButton.addEventListener('click', () => {
+            submitChat();
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
+
+        function submitChat() {
             const message = userInput.value;
             const url = urlInput.value;
 
@@ -203,12 +205,14 @@
                     appendMessage('AI', 'We have noted your business URL.');
                 }, 1000);
             }
-        });
+        }
 
-        // Parallax effect for the text
+        // Show chat container on scroll
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
-            parallaxText.style.transform = `translateY(${scrolled * 0.5}px) rotate(-90deg)`;
+            if (scrolled > window.innerHeight / 2) {
+                chatContainer.classList.add('visible');
+            }
         });
     </script>
 </body>
