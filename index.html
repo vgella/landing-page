@@ -231,17 +231,31 @@
                 urlInput.value = ''; // Clear the field after entry
             }
         });
-
+        
         function submitChat() {
             const message = userInput.value;
-
+        
             if (message) {
                 appendMessage('User', message);
                 userInput.value = '';
-
-                setTimeout(() => {
-                    appendMessage('AI', `This is a dummy response from the AI.`);
-                }, 1000);
+        
+                // Send the message to the backend
+                fetch('https://410e-34-145-12-118.ngrok-free.app/chat', {  // Replace with your backend URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Append the AI's response to the chat
+                    appendMessage('AI', data.response);  // Assuming your backend returns { response: "AI's response" }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    appendMessage('AI', 'Sorry, there was an issue connecting to the server.');
+                });
             }
         }
 
