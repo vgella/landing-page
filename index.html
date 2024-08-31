@@ -242,7 +242,7 @@
                 const combinedMessage = `${message}${separator}${businessUrl}`;
 
                 // Send the message to the backend
-                fetch('https://1c28-34-142-231-67.ngrok-free.app/chat', {  // Replace with your backend URL
+                fetch('https://e8ee-34-143-230-181.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -258,7 +258,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    appendMessage('AI', 'Sorry, there was an issue connecting to the server.');
+                    appendMessage('AI', 'We are conducting maintenance on our chat service, this feature is unavailable right now. Check back in later and learn what Thirdeye can do for you.');
                 });
             }
         }
