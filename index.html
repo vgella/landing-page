@@ -234,7 +234,13 @@
                 submitChat();
             }
         });
-
+        urlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter'|| e.keyCode === 13) {
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
+            }
+        }
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter'|| e.keyCode === 13) {
                 businessUrl = urlInput.value;
