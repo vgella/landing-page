@@ -205,7 +205,18 @@
         const submitButton = document.getElementById('submit-button');
         const parallaxText = document.getElementById('parallax-text');
         let businessUrl = '';
-
+        let userIp = '';
+        
+        // Fetch the user's IP address using the ipify service
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                userIp = data.ip;
+                console.log("User's IP Address: ", userIp);
+            })
+            .catch(error => {
+                console.error('Error fetching IP address:', error);
+            });
         function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
@@ -242,13 +253,14 @@
                 const combinedMessage = `${message}${separator}${businessUrl}`;
 
                 // Send the message to the backend
-                fetch('https://e4a4-35-221-215-239.ngrok-free.app/chat', {  // Replace with your backend URL
+                fetch('https://2a0b-35-221-215-239.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ 
-                        message: combinedMessage
+                        message: combinedMessage,
+                        ip_address: userIp
                     }),
                 })
                 .then(response => response.json())
