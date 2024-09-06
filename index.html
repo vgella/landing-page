@@ -138,25 +138,7 @@
         #url-input::placeholder {
             color: #ffffff; /* Placeholder text in white */
         }
-        .url-input-container {
-            position: relative;
-            width: 100%; /* Ensure container takes full width */
-        }
-        
-        /* Triangle positioned to the right of the input */
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 15px solid white; /* Color the triangle white to match the input style */
-            position: absolute;
-            top: 50%;
-            right: 15px; /* Position it inside the right corner */
-            transform: translateY(-50%);
-            cursor: pointer; /* Make it clickable */
-            z-index: 10;
-        }
+
         #submit-button {
             padding: 15px;
             background-color: #000;
@@ -202,10 +184,7 @@
     <!-- Chat Interface Container -->
     <div id="chat-container">
         <!-- Business URL Field -->
-        <div class="url-input-container">
-            <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
-            <div class="triangle" id="triangle"></div> <!-- This is the triangle -->
-        </div>
+        <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
         <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
@@ -226,7 +205,6 @@
         const parallaxText = document.getElementById('parallax-text');
         let businessUrl = '';
         let userIp = '';
-        const triangle = document.getElementById('triangle');
 
 
         // Fetch the user's IP address using the ipify service
@@ -256,11 +234,16 @@
                 submitChat();
             }
         });
-        // Add click event listener to the triangle to act as pressing "Enter"
-        triangle.addEventListener('click', () => {
-            businessUrl = urlInput.value;
-            appendMessage('AI', `Business information entered: ${businessUrl}`);
-            urlInput.value = ''; // Clear the field after entry
+        urlInput.addEventListener('click', (e) => {
+            const inputWidth = urlInput.offsetWidth; // Get the width of the input field
+            const clickPosition = e.offsetX; // Get the horizontal position of the click within the input field
+            
+            // Check if the click occurred on the right half of the input
+            if (clickPosition > inputWidth / 2) {
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
+            }
         });
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter'|| e.keyCode === 13 || e.keyCode == 9) {
