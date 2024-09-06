@@ -122,9 +122,14 @@
         .input-field::placeholder {
             color: #000000; 
         }
-
+        .url-input-container {
+            position: relative;
+            width: 100%;
+            display: inline-block;
+            margin-bottom: 40px; /* Add more margin to push down the chat history */
+        }
         #url-input {
-            width: calc(100% - 40px); /* Match width of chat box */
+            width: calc(100%); /* Match width of chat box */
             padding: 15px;
             background-color: #000000; 
             color: #ffffff; 
@@ -138,7 +143,19 @@
         #url-input::placeholder {
             color: #ffffff; /* Placeholder text in white */
         }
-
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid black; /* Make the triangle black */
+            position: absolute;
+            bottom: -20px; /* Position it below the input field */
+            right: 10px;  /* Adjust the position to the right */
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 10;
+        }
         #submit-button {
             padding: 15px;
             background-color: #000;
@@ -184,7 +201,10 @@
     <!-- Chat Interface Container -->
     <div id="chat-container">
         <!-- Business URL Field -->
-        <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
+        <div class="url-input-container">
+            <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
+            <div class="triangle" id="triangle"></div> <!-- Triangle below the input field -->
+        </div>
         <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
@@ -205,6 +225,7 @@
         const parallaxText = document.getElementById('parallax-text');
         let businessUrl = '';
         let userIp = '';
+        const triangle = document.getElementById('triangle');
 
 
         // Fetch the user's IP address using the ipify service
@@ -252,7 +273,11 @@
                 urlInput.value = ''; // Clear the field after entry
             }
         });
-        
+        triangle.addEventListener('click', () => {
+            businessUrl = urlInput.value;
+            appendMessage('AI', `Business information entered: ${businessUrl}`);
+            urlInput.value = ''; // Clear the field after entry
+        });
         function submitChat() {
             const message = userInput.value;
         
