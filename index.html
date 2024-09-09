@@ -3,121 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Litcode by thirdeye</title>
+    <title>Thirdeye AI - Chat Interface</title>
+    
     <link rel="icon" href="flavicon_thirdeye.png" type="image/png">
-    <!-- Include highlight.js for syntax highlighting -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
 
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;  
-            padding: 0; 
+            margin: 0;
             font-family: 'Roboto', sans-serif;
-            background-color: #ffffff; /* White background */
+            background-color: #ffffff;
             color: #000000;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow-y: scroll; 
-        }
-
-        /* Tab Container */
-        #tab-container {
-            display: flex;
-            width: 100%;
-            background-color: #ffffff; /* White background matching the body */
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Tabs */
-        .tab {
-            padding: 10px 15px;
-            background-color: #d3d3d3; /* Grey for non-selected tabs */
-            border: 1px solid #888;
-            border-radius: 15px 15px 0 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: black;
-            transition: background-color 0.3s;
-            margin-right: -1px;
-        }
-
-        .tab.active {
-            background-color: #ffffff; /* White for the selected tab */
-            color: #000;
-        }
-
-        .tab input {
-            border: none;
-            background: none;
-            outline: none;
-            width: 100px;
-            text-align: center;
-            color: black;
-        }
-
-        .tab input:disabled {
-            color: black;
-            cursor: default;
-        }
-
-        /* Rounded "+" Button */
-        #add-page-button {
-            border-radius: 15px; /* Rounded edges to match the tabs */
-            background-color: #d3d3d3;
-            border: 1px solid #888;
-            padding: 5px; /* Adjust the padding to match the design */
-            cursor: pointer;
-            height: 50%; /* Half the height of the tab bar */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 5px;
-        }
-
-        /* Chat Container */
-        #chat-container {
-            width: 100%; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0;
-            box-sizing: border-box;
+            overflow-x: hidden;
             overflow-y: auto;
-            flex-grow: 1;
+            scroll-behavior: smooth; /* Smooth scroll */
         }
 
+        #logo-container {
+            width: 100%;
+            height: 100vh; /* Fullscreen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            z-index: 1; 
+            position: relative;
+        }
+
+        #logo-container img {
+            width: 80%; /* Adjusted to fill more of the screen width */
+            max-width: 800px;
+            animation: fadeIn 1s ease;
+        }
+
+        #parallax-text {
+            position: fixed;
+            top: 36%; /* Moved up slightly to ensure full visibility */
+            right: 50px; /* Adjusted position slightly to the left */
+            font-size: 5rem; /* Keeping the size as is */
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            color: #000;
+            transform: rotate(-90deg);
+            transform-origin: right center;
+            white-space: nowrap;
+            z-index: 2; 
+            pointer-events: none;
+        }
+
+        #chat-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 200px 20px 150px; /* Increased padding to prevent overlap */
+            transform: translateY(0); 
+            opacity: 1; 
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            z-index: 3; 
+            background-color: #ffffff; 
+        }
         #chat-box {
             flex-grow: 1;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            color: white;
-            background-color: #000000;
-            padding: 20px;
-            border-radius: 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            word-wrap: break-word;
+            gap: 10px;
+            color: black;
+            background-color: #ffffff;
+            margin-bottom: 10px;
         }
 
-        /* Bubble styling for user/AI messages */
         .message {
+            margin-bottom: 10px;
             padding: 10px;
+            border-radius: 15px;
             background-color: #f0f0f0;
             color: #000;
+            max-width: 80%;
             word-wrap: break-word;
-            max-width: 60%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            margin-bottom: 10px;
+            z-index: 4;
         }
 
         .message.user {
@@ -127,234 +96,284 @@
 
         .message.ai {
             align-self: flex-start;
-            background-color: #ffffff;
         }
 
-        /* Input Field */
         #input-container {
             width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-top: 20px;
             color: black;
-            padding: 10px;
-            background-color: transparent;
+            z-index: 5; 
+            background-color: #ffffff;
         }
 
-        .main-input-field {
-            flex-grow: 1;
+        .input-field {
+            flex-grow: 1; 
             padding: 15px;
-            border: none;
+            border: none; /* Removed outline */
             font-size: 16px;
             outline: none;
             background-color: #ffffff;
             color: #000000;
+            z-index: 6;
+            font-family: 'Arial', sans-serif;
+            box-shadow: none; /* No shadow, like a document */
+        }
+
+        .input-field::placeholder {
+            color: #000000; 
+        }
+        .url-input-container {
+            position: relative;
+            width: 100%;
+            display: inline-block;
+            margin-bottom: 40px; /* Add more margin to push down the chat history */
+        }
+        #url-input {
+            width: calc(100%); /* Match width of chat box */
+            padding: 15px;
+            background-color: #000000; 
+            color: #ffffff; 
             border-radius: 15px;
+            font-size: 16px;
+            outline: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Add more margin below */
+            z-index: 4; /* Increased z-index to ensure it's on top */
         }
-
-        .main-input-field::placeholder {
-            color: #000000;
+        #url-input::placeholder {
+            color: #ffffff; /* Placeholder text in white */
         }
-
-        /* Send Button (Upside Down Triangle) */
         .triangle {
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid black;
-            position: relative;
-            left: -5px;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            outline: 3px solid white;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 30px solid black; /* Make the triangle black */
+            position: absolute;
+            bottom: -30px; /* Position it below the input field */
+            right: 20px;  /* Adjust the position to the right */
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 10;
+        }
+        #submit-button {
+            padding: 15px;
+            background-color: #000;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 7;
+        }
+
+        #submit-button:hover {
+            background-color: #333;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #chat-box {
+                max-height: 200px;
+            }
+        }
+        .footer-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            display: inline-block;
+            margin: 0 15px;
+            text-decoration: none;
+            color: black;
+            font-family: 'Times New Roman', serif; 
+            font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        /* Logo Section */
-        #logo-container {
-            position: relative; /* Relative to chat container */
-            margin-top: 20px;
-            right: 20px;
-            align-self: flex-end;
+        .footer-links a:hover {
+            text-decoration: underline;
         }
 
-        #logo-container img {
-            width: 225px;
-            height: auto;
-            cursor: pointer;
+        /* Styling for popup windows */
+        .popup-content {
+            padding: 20px;
+            max-width: 600px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Tab Container -->
-    <div id="tab-container">
-        <!-- Tabs will be added here dynamically -->
-        <div class="tab active" id="new-page-1">
-            <input type="text" value="New Page 1" class="tab-title" disabled />
-        </div>
-        <button id="add-page-button">+</button>
+    <!-- Logo Section -->
+    <div id="logo-container">
+        <img src="thirdeye_logo.svg" alt="Thirdeye AI Logo">
     </div>
+
+    <!-- Parallax Text -->
+    <div id="parallax-text">elevate ai conscious</div>
 
     <!-- Chat Interface Container -->
     <div id="chat-container">
-
-        <!-- Chat History / Chat Box -->
+        <!-- Business URL Field -->
+        <div class="url-input-container">
+            <input type="text" id="url-input" class="input-field" placeholder="Describe your business or enter your business URL..." />
+            <div class="triangle" id="triangle"></div> <!-- Triangle below the input field -->
+        </div>
+        <!-- Chat History -->
         <div id="chat-box">
             <!-- Chat messages will appear here -->
         </div>
 
         <!-- Input Fields -->
         <div id="input-container">
-            <!-- Describe the coding task field -->
-            <input type="text" id="coding-task-input" class="main-input-field" placeholder="Describe the coding task..." />
-            <!-- Send button (triangle) -->
-            <div class="send-button-container" id="send-button">
-                <div class="triangle"></div>
-            </div>
+            <input type="text" id="user-input" class="input-field" placeholder="Type your message..." />
+            <button id="submit-button">Send</button>
         </div>
     </div>
-
-    <!-- Logo Section (Clickable link to thirdeyeai.org) -->
-    <div id="logo-container">
-        <a href="https://thirdeyeai.org" target="_blank">
-            <img src="experience_thirdeye.svg" alt="ThirdEye Experience Logo">
-        </a>
+    <div class="footer-links">
+        <a href="javascript:void(0);" onclick="openPopup('Notice.txt', 'Notice')">Notice</a>
+        <a href="javascript:void(0);" onclick="openPopup('License.txt', 'Terms and Conditions')">Terms and Conditions</a>
     </div>
+
 
     <script>
         const chatBox = document.getElementById('chat-box');
-        const codingTaskInput = document.getElementById('coding-task-input');
-        const sendButton = document.getElementById('send-button');
-        const addPageButton = document.getElementById('add-page-button');
+        const userInput = document.getElementById('user-input');
+        const urlInput = document.getElementById('url-input');
+        const submitButton = document.getElementById('submit-button');
+        const parallaxText = document.getElementById('parallax-text');
+        let businessUrl = '';
         let userIp = '';
-        let currentPage = 'New Page 1';
-        let pageCount = 1;
+        const triangle = document.getElementById('triangle');
 
-        // Store chat histories in an object with page names as keys
-        const chatHistories = {
-            'New Page 1': []
-        };
 
-        // Fetch the user's IP address
+        // Fetch the user's IP address using the ipify service
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 userIp = data.ip;
+                console.log("User's IP Address: ", userIp);
             })
             .catch(error => {
                 console.error('Error fetching IP address:', error);
             });
-
-        // Helper function to append messages to the chatbox
-        function appendMessage(sender, text, isCode = false) {
+        function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
-
-            if (isCode) {
-                const preElement = document.createElement('pre');
-                const codeElement = document.createElement('code');
-                codeElement.textContent = text;
-                preElement.appendChild(codeElement);
-                messageElement.appendChild(preElement);
-                hljs.highlightElement(codeElement);  // Syntax highlighting for code
-            } else {
-                messageElement.textContent = text;
-            }
-
+            messageElement.textContent = text;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; 
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Function to reapply syntax highlighting
-        function reapplySyntaxHighlighting() {
-            setTimeout(() => {
-                document.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightElement(block);
+        submitButton.addEventListener('click', () => {
+            submitChat();
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter'|| e.keyCode === 13 || e.keyCode == 9) {
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
+            }
+        });
+        triangle.addEventListener('click', () => {
+            businessUrl = urlInput.value;
+            appendMessage('AI', `Business information entered: ${businessUrl}`);
+            urlInput.value = ''; // Clear the field after entry
+        });
+        function openPopup(file, title) {
+            fetch(file)
+                .then(response => response.text())
+                .then(data => {
+                    // Create the popup window
+                    const popupWindow = window.open('', title, 'width=600,height=400,resizable,scrollbars');
+                    popupWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>${title}</title>
+                        </head>
+                        <body>
+                            <div class="popup-content">
+                                <h2>${title}</h2>
+                                <div>${data}</div>
+                            </div>
+                        </body>
+                        </html>
+                    `);
+                    popupWindow.document.close();
+                })
+                .catch(error => {
+                    console.error('Error fetching the file:', error);
                 });
-            }, 100);  // Delay for DOM update
         }
+        function submitChat() {
+            const message = userInput.value;
+        
+            if (message) {
+                appendMessage('User', message);
+                userInput.value = '';
+                const separator = "§¶∆≈¥";
+                const combinedMessage = `${message}${separator}${businessUrl}`;
 
-        // Function to handle submission of the coding task
-        function submitCodingTask() {
-            const codingTask = codingTaskInput.value;
-
-            if (codingTask) {
-                appendMessage('User', codingTask);
-                codingTaskInput.value = ''; 
-
-                chatHistories[currentPage].push({ sender: 'User', text: codingTask, isCode: false });
-
-                fetch('https://070f-34-126-156-247.ngrok-free.app/chat', {
+                // Send the message to the backend
+                fetch('https://51ad-35-201-243-177.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        ip_address: userIp,
-                        message: codingTask  
+                    body: JSON.stringify({ 
+                        message: combinedMessage,
+                        ip_address: userIp
                     }),
                 })
                 .then(response => response.json())
                 .then(data => {
-                    appendMessage('AI', data.response, true);
-                    chatHistories[currentPage].push({ sender: 'AI', text: data.response, isCode: true });
+                    // Append the AI's response to the chat
+                    appendMessage('AI', data.response);  // Assuming your backend returns { response: "AI's response" }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    appendMessage('AI', 'An error occurred while processing your request.');
+                    appendMessage('AI', 'We are conducting maintenance on our chat service, this feature is unavailable right now. Check back in later and learn what Thirdeye can do for you.');
                 });
             }
         }
 
-        // Attach event listeners for sending messages
-        sendButton.addEventListener('click', submitCodingTask);
-        codingTaskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                submitCodingTask();
-            }
+        // Parallax effect for the text
+        // Reverse Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * -0.5}px) rotate(-90deg)`;
         });
-
-        // Tab Functionality: Create New Tab and Switch Between Tabs
-        addPageButton.addEventListener('click', () => {
-            pageCount++;
-            const newTab = document.createElement('div');
-            newTab.classList.add('tab');
-            newTab.innerHTML = `<input type="text" value="New Page ${pageCount}" class="tab-title" disabled />`;
-            document.getElementById('tab-container').insertBefore(newTab, addPageButton);
-            chatHistories[`New Page ${pageCount}`] = [];
-
-            newTab.addEventListener('click', () => {
-                setActiveTab(newTab, `New Page ${pageCount}`);
-            });
+        // Scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
         });
-
-        function setActiveTab(tab, pageName) {
-            const activeTab = document.querySelector('.tab.active');
-            if (activeTab) {
-                activeTab.classList.remove('active');
-            }
-
-            tab.classList.add('active');
-            currentPage = pageName;
-            loadChatHistory(pageName);
-        }
-
-        function loadChatHistory(pageName) {
-            chatBox.innerHTML = ''; 
-            const history = chatHistories[pageName] || [];
-            history.forEach(msg => {
-                appendMessage(msg.sender, msg.text, msg.isCode);
-            });
-
-            reapplySyntaxHighlighting();
-        }
-
-        const firstTab = document.getElementById('new-page-1');
-        firstTab.addEventListener('click', () => {
-            setActiveTab(firstTab, 'New Page 1');
-        });
+        
     </script>
 </body>
 </html>
