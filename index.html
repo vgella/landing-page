@@ -161,7 +161,7 @@
             cursor: pointer;
             z-index: 10;
         }
-        #submit-button {
+        #submit-button, #waitlist-button {
             padding: 15px;
             background-color: #000;
             border: none;
@@ -173,7 +173,7 @@
             z-index: 7;
         }
 
-        #submit-button:hover {
+        #submit-button:hover, #waitlist-button:hover {
             background-color: #333;
         }
 
@@ -221,6 +221,19 @@
             font-family: Arial, sans-serif;
         }
 
+        #waitlist-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
     </style>
 </head>
 <body>
@@ -251,13 +264,86 @@
             <button id="submit-button">Send</button>
         </div>
     </div>
+
+    <!-- Join Client Waitlist Button -->
+    <div id="waitlist-container" style="text-align: center; margin-top: 20px;">
+        <button id="waitlist-button">Join our Client Waitlist</button>
+    </div>
+
+    <!-- Waitlist Form Popup -->
+    <div id="waitlist-popup" class="popup">
+        <div class="popup-content">
+            <h2>Join our Client Waitlist</h2>
+            <form id="waitlist-form">
+                <input type="text" id="waitlist-name" class="input-field" placeholder="Your Name" required />
+                <input type="email" id="waitlist-email" class="input-field" placeholder="Your Email" required />
+                <input type="text" id="waitlist-business" class="input-field" placeholder="Your Business Name" required />
+                <button type="submit" id="submit-waitlist">Submit</button>
+            </form>
+        </div>
+    </div>
+
     <div class="footer-links">
         <a href="javascript:void(0);" onclick="openPopup('Notice.txt', 'Notice')">Notice</a>
         <a href="javascript:void(0);" onclick="openPopup('License.txt', 'Terms and Conditions')">Terms and Conditions</a>
         <a href="https://litcode.org" target="_blank">LitCode by thirdeye</a> <!-- New link to LitCode -->
-
     </div>
 
+    <!-- Include EmailJS -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // Initialize EmailJS
+        emailjs.init('XrR3OHZNhdSxZU0FJ');
+
+        const waitlistButton = document.getElementById('waitlist-button');
+        const waitlistPopup = document.getElementById('waitlist-popup');
+        const waitlistForm = document.getElementById('waitlist-form');
+
+        function sendWaitlistEmail(name, email, business, chatHistory) {
+            const templateParams = {
+                name: name,
+                email: email,
+                business: business,
+                chat_history: JSON.stringify(chatHistory, null, 2)
+            };
+
+            // Use your Service ID (Thirdeye AI) and your Template ID from EmailJS
+            emailjs.send('Thirdeye AI', 'template_rve8bhp', templateParams)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                alert('Thank you for joining our waitlist!');
+            }, function(error) {
+                console.error('FAILED...', error);
+                alert('Error: ' + JSON.stringify(error)); // Detailed error alert
+            });
+        }
+
+        // Handle waitlist form submission
+        waitlistForm.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission
+
+            // Collect the form data
+            const name = document.getElementById('waitlist-name').value;
+            const email = document.getElementById('waitlist-email').value;
+            const business = document.getElementById('waitlist-business').value;
+
+            // Collect chat history
+            const chatHistory = [];
+            document.querySelectorAll('#chat-box .message').forEach(message => {
+                chatHistory.push({ sender: message.classList.contains('user') ? 'User' : 'AI', text: message.textContent });
+            });
+
+            // Send the waitlist email via EmailJS
+            sendWaitlistEmail(name, email, business, chatHistory);
+
+            // Close the popup after submission
+            waitlistPopup.style.display = 'none';
+        });
+
+        waitlistButton.addEventListener('click', () => {
+            waitlistPopup.style.display = 'block';  // Show the popup
+        });
+    </script>
 
     <script>
         const chatBox = document.getElementById('chat-box');
