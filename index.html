@@ -9,16 +9,6 @@
 
     <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <script type="text/javascript">
-        // Initialize EmailJS with your user ID
-        (function() {
-            emailjs.init('XrR3OHZNhdSxZU0FJ');  // Your provided user ID
-        })();
-    </script>
-
     <style>
         body {
             margin: 0;
@@ -32,50 +22,50 @@
 
         #logo-container {
             width: 100%;
-            height: auto;
+            height: auto; /* Adjust to auto to fit the content */
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #ffffff;
-            padding: 20px 0;
+            padding: 20px 0; /* Minimal whitespace around the logo */
             z-index: 1; 
             position: relative;
         }
 
         #logo-container img {
-            width: 80%;
+            width: 80%; /* Adjusted to fill more of the screen width */
             max-width: 800px;
             animation: fadeIn 1s ease;
         }
 
         #parallax-text {
             position: fixed;
-            top: 36%;
-            right: 25px;
-            font-size: 3rem;
+            top: 36%; /* Moved up slightly to ensure full visibility */
+            right: 25px; /* Adjusted position slightly to the left */
+            font-size: 3rem; /* Reduced the font size */
             font-family: 'Times New Roman', serif;
             font-weight: bold;
             color: #000;
             transform: rotate(-90deg);
             transform-origin: right center;
             white-space: nowrap;
-            z-index: 2;
+            z-index: 2; 
             pointer-events: none;
         }
 
         #chat-container {
-            width: 80%;
-            max-width: 800px;
+            width: 80%; /* Set width to match logo width */
+            max-width: 800px; /* Same max-width as logo */
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0;
+            padding: 20px 0; /* Minimal padding */
             transform: translateY(0); 
             opacity: 1; 
             transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-            z-index: 3;
-            background-color: #ffffff;
+            z-index: 3; 
+            background-color: #ffffff; 
         }
 
         #chat-box {
@@ -117,41 +107,60 @@
             gap: 10px;
             margin-top: 20px;
             color: black;
-            z-index: 5;
+            z-index: 5; 
             background-color: #ffffff;
         }
 
         .input-field {
             flex-grow: 1; 
             padding: 15px;
-            border: none;
+            border: none; /* Removed outline */
             font-size: 16px;
             outline: none;
             background-color: #ffffff;
             color: #000000;
             z-index: 6;
             font-family: 'Arial', sans-serif;
-            box-shadow: none;
+            box-shadow: none; /* No shadow, like a document */
         }
 
         .input-field::placeholder {
             color: #000000; 
         }
-
+        .url-input-container {
+            position: relative;
+            width: 100%;
+            display: inline-block;
+            margin-bottom: 40px; /* Add more margin to push down the chat history */
+        }
+        #url-input {
+            width: calc(100%); /* Match width of chat box */
+            padding: 15px;
+            background-color: #000000; 
+            color: #ffffff; 
+            border-radius: 15px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Add more margin below */
+            z-index: 4; /* Increased z-index to ensure it's on top */
+        }
+        #url-input::placeholder {
+            color: #ffffff; /* Placeholder text in white */
+        }
         .triangle {
             width: 0;
             height: 0;
             border-left: 25px solid transparent;
             border-right: 25px solid transparent;
-            border-top: 30px solid black;
+            border-top: 30px solid black; /* Make the triangle black */
             position: absolute;
-            bottom: -30px;
-            right: 20px;
+            bottom: -30px; /* Position it below the input field */
+            right: 20px;  /* Adjust the position to the right */
             transform: translateY(-50%);
             cursor: pointer;
             z-index: 10;
         }
-
         #submit-button {
             padding: 15px;
             background-color: #000;
@@ -177,6 +186,11 @@
             }
         }
 
+        @media (max-width: 600px) {
+            #chat-box {
+                max-height: 200px;
+            }
+        }
         .footer-links {
             text-align: center;
             margin-top: 149px;
@@ -197,32 +211,14 @@
             text-decoration: underline;
         }
 
-        #waitlist-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ffffff;
-            border-radius: 15px;
-            padding: 30px;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
+        /* Styling for popup windows */
         .popup-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        #submit-waitlist {
-            padding: 10px;
-            background-color: #000;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
+            padding: 20px;
+            max-width: 600px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: Arial, sans-serif;
         }
 
     </style>
@@ -255,30 +251,13 @@
             <button id="submit-button">Send</button>
         </div>
     </div>
-
-    <!-- Join Client Waitlist Button -->
-    <div id="waitlist-container" style="text-align: center; margin-top: 20px;">
-        <button id="waitlist-button">Join our Client Waitlist</button>
-    </div>
-
-    <!-- Waitlist Form Popup -->
-    <div id="waitlist-popup" class="popup">
-        <div class="popup-content">
-            <h2>Join our Client Waitlist</h2>
-            <form id="waitlist-form">
-                <input type="text" id="waitlist-name" class="input-field" placeholder="Your Name" required />
-                <input type="email" id="waitlist-email" class="input-field" placeholder="Your Email" required />
-                <input type="text" id="waitlist-business" class="input-field" placeholder="Your Business Name" required />
-                <button type="submit" id="submit-waitlist">Submit</button>
-            </form>
-        </div>
-    </div>
-
     <div class="footer-links">
         <a href="javascript:void(0);" onclick="openPopup('Notice.txt', 'Notice')">Notice</a>
         <a href="javascript:void(0);" onclick="openPopup('License.txt', 'Terms and Conditions')">Terms and Conditions</a>
-        <a href="https://litcode.org" target="_blank">LitCode by thirdeye</a>
+        <a href="https://litcode.org" target="_blank">LitCode by thirdeye</a> <!-- New link to LitCode -->
+
     </div>
+
 
     <script>
         const chatBox = document.getElementById('chat-box');
@@ -289,9 +268,6 @@
         let businessUrl = '';
         let userIp = '';
         const triangle = document.getElementById('triangle');
-        const waitlistButton = document.getElementById('waitlist-button');
-        const waitlistPopup = document.getElementById('waitlist-popup');
-        const waitlistForm = document.getElementById('waitlist-form');
 
         // Fetch the user's IP address using the ipify service
         fetch('https://api.ipify.org?format=json')
@@ -322,7 +298,7 @@
                 const combinedMessage = `${message}${separator}${businessUrl}`;
 
                 // Send the message to the backend
-                fetch('https://36a6-34-87-69-92.ngrok-free.app/chat', {  // Replace with your backend URL
+                fetch('https://c094-34-80-167-161.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -344,52 +320,90 @@
             }
         }
 
-        function sendWaitlistEmail(name, email, business, chatHistory) {
-            const templateParams = {
-                name: name,
-                email: email,
-                business: business,
-                chat_history: JSON.stringify(chatHistory, null, 2)
-            };
-
-            // Use your Service ID (Thirdeye AI) and your Template ID from EmailJS
-            emailjs.send('Thirdeye AI', 'template_rve8bhp', templateParams)
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-                alert('Thank you for joining our waitlist!');
-            }, function(error) {
-                console.error('FAILED...', error);
-                alert('There was an error sending your request. Please try again later.');
-            });
+        // Simulate typing effect for "What is thirdeye"
+        function simulateTyping(text, callback) {
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < text.length) {
+                    userInput.value += text[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    if (callback) callback();
+                }
+            }, 150); // Adjust typing speed here (150ms between each character)
         }
 
-        // Handle waitlist form submission
-        waitlistForm.addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevent the default form submission
-
-            // Collect the form data
-            const name = document.getElementById('waitlist-name').value;
-            const email = document.getElementById('waitlist-email').value;
-            const business = document.getElementById('waitlist-business').value;
-
-            // Collect chat history
-            const chatHistory = [];
-            document.querySelectorAll('#chat-box .message').forEach(message => {
-                chatHistory.push({ sender: message.classList.contains('user') ? 'User' : 'AI', text: message.textContent });
-            });
-
-            // Send the waitlist email via EmailJS
-            sendWaitlistEmail(name, email, business, chatHistory);
-
-            // Close the popup after submission
-            waitlistPopup.style.display = 'none';
+        // Automatically start typing "What is thirdeye" after 1 second and send it
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                simulateTyping("What is thirdeye", () => {
+                    submitChat(); // Send the message after typing is done
+                });
+            }, 1000); // 1 second delay before starting to type
         });
 
-        waitlistButton.addEventListener('click', () => {
-            waitlistPopup.style.display = 'block';  // Show the popup
+        submitButton.addEventListener('click', () => {
+            submitChat();
         });
 
-        // Existing code for chat simulation, etc.
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13 || e.keyCode == 9) {
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
+            }
+        });
+
+        triangle.addEventListener('click', () => {
+            businessUrl = urlInput.value;
+            appendMessage('AI', `Business information entered: ${businessUrl}`);
+            urlInput.value = ''; // Clear the field after entry
+        });
+
+        function openPopup(file, title) {
+            fetch(file)
+                .then(response => response.text())
+                .then(data => {
+                    // Create the popup window
+                    const popupWindow = window.open('', title, 'width=600,height=400,resizable,scrollbars');
+                    popupWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>${title}</title>
+                        </head>
+                        <body>
+                            <div class="popup-content">
+                                <h2>${title}</h2>
+                                <div>${data}</div>
+                            </div>
+                        </body>
+                        </html>
+                    `);
+                    popupWindow.document.close();
+                })
+                .catch(error => {
+                    console.error('Error fetching the file:', error);
+                });
+        }
+
+        // Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * -0.5}px) rotate(-90deg)`;
+        });
+
+        // Scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+        
     </script>
 </body>
 </html>
