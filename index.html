@@ -1,325 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8DHWKCNVS"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-T8DHWKCNVS');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Litcode by thirdeye</title>
+    <title>Thirdeye AI - Chat Interface</title>
+    
     <link rel="icon" href="flavicon_thirdeye.png" type="image/png">
-    
-    <!-- Load Monokai Sublime theme for syntax highlighting -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/monokai-sublime.min.css">
-    
-    <!-- Load highlight.js library -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
 
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Roboto', sans-serif;
             background-color: #ffffff;
             color: #000000;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow-y: scroll;
-        }
-
-        /* Tab container with hidden scrollbar */
-        #tab-container {
-            display: flex;
-            width: 100%;
-            background-color: #ffffff;
-            padding: 0;
-            box-sizing: border-box;
-            background-image: url('litcode_logo_slimthick.svg'); /* Set the background image */
-            background-repeat: no-repeat; /* Prevent repeating */
-            background-position: center; /* Center the image */
-            background-size: contain; 
-            overflow-x: auto; /* Enable horizontal scrolling */
-            scroll-behavior: smooth;
-        }
-
-        /* Hide the scrollbar */
-        #tab-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari and Opera */
-        }
-
-        #tab-container {
-            -ms-overflow-style: none;  /* Internet Explorer 10+ */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        /* Tabs */
-        .tab {
-            padding: 7.5px 15px;
-            background-color: #d3d3d3;
-            border-radius: 15px 15px 0 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: black;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-right: -1px;
-            border: none;
-            margin-top: 10px;
-            width: 150px; /* Default width for each tab */
-            overflow: hidden; /* Hide overflowing text */
-        }
-
-        .tab input {
-            border: none;
-            background-color: transparent;
-            outline: none;
-            text-align: center;
-            font-size: 16px;
-            color: black;
-            width: 100px;
-            display: block; /* Ensure input is block-level */
-        }
-
-        .tab.shrunk input {
-            display: none; /* Hide the tab title when shrunk */
-        }
-
-        .tab.active {
-            background-color: #ffffff;
-            color: #000;
-            transform: translateY(-5px);
-            z-index: 1;
-        }
-
-        .tab:hover {
-            transform: translateY(-5px);
-            z-index: 1;
-        }
-
-        #add-page-button {
-            border-radius: 15px 15px 0 0;
-            background-color: #000000;
-            padding: 5px;
-            cursor: pointer;
-            height: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: -1px;
-            margin-top: 30px;
-            border: none;
-            color: #ffffff;
-            z-index: 1;
-        }
-
-        /* Chat container */
-        #chat-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: calc(100vh - 30px);
-            box-sizing: border-box;
+            overflow-x: hidden;
             overflow-y: auto;
-            flex-grow: 1;
-            position: relative;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* Internet Explorer and Edge */
-        }
-        
-        #chat-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, and Opera */
-        }
-        /* Dropdown container */
-        #model-select-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 2;
-            display: inline-block;
-        }
-    
-        /* Dropdown styling */
-        #model-select {
-            padding: 10px;
-            font-size: 16px;
-            color: white;
-            background-color: black;
-            border: 2px solid white;
-            border-radius: 5px;
-            outline: none;
-            appearance: none;
-            cursor: pointer;
-            padding-right: 30px;
-            transition: background-color 0.3s, border-color 0.3s;
+            scroll-behavior: smooth; /* Smooth scroll */
         }
 
-        #model-select-container::after {
-            content: '▼';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
+        #logo-container {
+            width: 100%;
+            height: auto; /* Adjust to auto to fit the content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 20px 0; /* Minimal whitespace around the logo */
+            z-index: 1; 
+            position: relative;
+        }
+
+        #logo-container img {
+            width: 80%; /* Adjusted to fill more of the screen width */
+            max-width: 800px;
+            animation: fadeIn 1s ease;
+        }
+
+        #parallax-text {
+            position: fixed;
+            top: 36%; /* Moved up slightly to ensure full visibility */
+            right: 25px; /* Adjusted position slightly to the left */
+            font-size: 3rem; /* Reduced the font size */
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            color: #000;
+            transform: rotate(-90deg);
+            transform-origin: right center;
+            white-space: nowrap;
+            z-index: 2; 
             pointer-events: none;
         }
 
-        #model-select option {
-            background-color: black;
-            color: white;
-        }
-
-        #model-select option:checked {
-            background-color: #007bff;
-            color: white;
-        }
-
-        #model-select:hover {
-            background-color: #333;
-            border-color: #007bff;
-        }
-
-        #model-select:focus {
-            border-color: #007bff;
-            outline: none;
+        #chat-container {
+            width: 80%; /* Set width to match logo width */
+            max-width: 800px; /* Same max-width as logo */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0; /* Minimal padding */
+            transform: translateY(0); 
+            opacity: 1; 
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            z-index: 3; 
+            background-color: #ffffff; 
         }
 
         #chat-box {
             flex-grow: 1;
-            width: calc(100% - 40px);
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            color: white;
-            background-color: #000000;
-            padding: 60px 20px 20px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            word-wrap: break-word;
-            position: relative;
+            gap: 10px;
+            color: black;
+            background-color: #ffffff;
+            margin-bottom: 10px;
         }
 
         .message {
-            padding: 0;
-            background-color: transparent;
-            box-shadow: none;
-            margin-bottom: 0;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 15px;
+            background-color: #f0f0f0;
+            color: #000;
+            max-width: 80%;
+            word-wrap: break-word;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 4;
         }
 
         .message.user {
             align-self: flex-end;
             background-color: #e0e0e0;
-            padding: 10px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            color: black;
         }
 
         .message.ai {
-            align-self: stretch;
-            width: 100%;
-            background-color: transparent;
-            color: #ffffff;
-            padding: 0;
-            margin: 0;
-            border: none;
-        }
-
-        .message pre code {
-            background-color: #1e1e1e;
-            color: #f8f8f2;
-            width: 100%;
-            border-radius: 0;
-            padding: 10px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: 'Fira Code', monospace;
+            align-self: flex-start;
         }
 
         #input-container {
-            width: calc(100% - 20px);
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-top: 20px;
             color: black;
-            padding: 10px;
-            background-color: transparent;
-            box-sizing: border-box;
-            overflow-x: hidden;
+            z-index: 5; 
+            background-color: #ffffff;
         }
 
-        .main-input-field {
-            flex-grow: 1;
+        .input-field {
+            flex-grow: 1; 
             padding: 15px;
-            border: none;
+            border: none; /* Removed outline */
             font-size: 16px;
             outline: none;
             background-color: #ffffff;
             color: #000000;
+            z-index: 6;
+            font-family: 'Arial', sans-serif;
+            box-shadow: none; /* No shadow, like a document */
+        }
+
+        .input-field::placeholder {
+            color: #000000; 
+        }
+        .url-input-container {
+            position: relative;
+            width: 100%;
+            display: inline-block;
+            margin-bottom: 40px; /* Add more margin to push down the chat history */
+        }
+        #url-input {
+            width: calc(100%); /* Match width of chat box */
+            padding: 15px;
+            background-color: #000000; 
+            color: #ffffff; 
             border-radius: 15px;
+            font-size: 16px;
+            outline: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
+            margin-bottom: 20px; /* Add more margin below */
+            z-index: 4; /* Increased z-index to ensure it's on top */
         }
-
-        .main-input-field:focus {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        #url-input::placeholder {
+            color: #ffffff; /* Placeholder text in white */
         }
-
-        .main-input-field::placeholder {
-            color: #000000;
-        }
-
-        .send-button-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            background: none;
-            border: none;
-        }
-
         .triangle {
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 40px solid black;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 30px solid black; /* Make the triangle black */
+            position: absolute;
+            bottom: -30px; /* Position it below the input field */
+            right: 20px;  /* Adjust the position to the right */
+            transform: translateY(-50%);
             cursor: pointer;
-            outline: none;
-            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        #submit-button, #waitlist-button {
+            padding: 15px;
+            background-color: #000;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 7;
         }
 
-        .triangle:hover {
-            transform: scale(1.1);
+        #submit-button:hover, #waitlist-button:hover {
+            background-color: #333;
         }
 
-        #white-eye-logo {
-            position: relative;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: auto;
-            display: block;
-            opacity: 0.5; /* Makes it subtle and less prominent */
-            z-index: 0; /* Puts it behind the chat messages */
-            pointer-events: none; /* Prevents it from interfering with user interactions */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
-
+        @media (max-width: 600px) {
+            #chat-box {
+                max-height: 200px;
+            }
+        }
         .footer-links {
             text-align: center;
-            position: relative;
-            margin-top: 30px;
+            margin-top: 149px;
         }
 
         .footer-links a {
@@ -327,16 +201,17 @@
             margin: 0 15px;
             text-decoration: none;
             color: black;
-            font-family: 'Times New Roman', serif;
+            font-family: 'Times New Roman', serif; 
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
         }
-        
+
         .footer-links a:hover {
             text-decoration: underline;
         }
 
+        /* Styling for popup windows */
         .popup-content {
             padding: 20px;
             max-width: 600px;
@@ -346,477 +221,255 @@
             font-family: Arial, sans-serif;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        #feedback-button {
-            position: relative;
-            margin: 15px 0;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #feedback-button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Hamburger menu styles */
-        .hamburger-menu {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding: 10px;
-            background-color: transparent;
-        }
-
-        .hamburger-menu .line {
-            width: 30px;
-            height: 3px;
-            background-color: white; /* White hamburger button */
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            position: absolute;
-            top: 0;
-            right: -343px; /* Move the sidebar completely out of view */
-            width: 300px;
-            height: calc(100vh - 150px);
-            background-color: transparent;
-            box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 15px 0 0 15px;
-            transition: right 0.3s ease;
-            z-index: 5; /* High z-index to give priority when opened */
-            display: flex;
-            flex-direction: column;
-            padding: 20px; /* Added padding to not touch the top */
-        }
-
-        .sidebar.open {
-            right: 0; /* When open, it slides in */
-        }
-
-        /* Sidebar Content Styling */
-        .sidebar-header {
-            margin-bottom: 20px;
-        }
-
-        .search-tabs {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .sidebar-content {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-        }
-
-        .sidebar-content .sidebar-tab {
+        #waitlist-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .sidebar-content .sidebar-tab:hover {
-            background-color: #f0f0f0;
-        }
     </style>
 </head>
 <body>
-    <div id="tab-container">
-        <div class="tab active" id="new-page-1" data-page-name="New Page 1">
-            <input type="text" value="New Page 1" class="tab-title" />
-        </div>
-        <button id="add-page-button">+</button>
+
+    <!-- Logo Section -->
+    <div id="logo-container">
+        <img src="thirdeye_logo_horizontal.svg" alt="Thirdeye AI Logo">
     </div>
 
+    <!-- Parallax Text -->
+    <div id="parallax-text">elevate ai conscious</div>
+
+    <!-- Chat Interface Container -->
     <div id="chat-container">
-        <!-- Hamburger menu inside the chat container -->
-        <div id="hamburger-menu" class="hamburger-menu">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
+        <!-- Business URL Field -->
+        <div class="url-input-container">
+            <input type="text" id="url-input" class="input-field" placeholder="Enter your business URL:" />
+            <div class="triangle" id="triangle"></div> <!-- Triangle below the input field -->
         </div>
-
-        <!-- Sidebar inside the chat container -->
-        <div id="sidebar" class="sidebar">
-            <div class="sidebar-header">
-                <input type="text" id="search-tabs" class="search-tabs" placeholder="Search tabs or chats..." />
-            </div>
-            <div id="sidebar-content" class="sidebar-content">
-                <!-- This will be populated with the tab titles dynamically -->
-            </div>
-        </div>
-
-        <div id="model-select-container">
-            <select id="model-select">
-                <option value="chat">LitChat Llama3.1 Model (general)</option>
-                <option value="basic">LitCode Basic Model (coding)</option>
-                <option value="advanced">LitCode Premium Model (coding)</option>
-            </select>
-        </div> 
-
+        <!-- Chat History -->
         <div id="chat-box">
-            <img id="white-eye-logo" src="white_eye_logo.svg" alt="White Eye Logo" />
+            <!-- Chat messages will appear here -->
         </div>
 
+        <!-- Input Fields -->
         <div id="input-container">
-            <input type="text" id="coding-task-input" class="main-input-field" placeholder="Describe the coding task..." />
-            <div class="send-button-container" id="send-button">
-                <div class="triangle"></div>
-            </div>
+            <input type="text" id="user-input" class="input-field" placeholder="Type your message..." />
+            <button id="submit-button">Send</button>
+        </div>
+    </div>
+
+    <!-- Join Client Waitlist Button -->
+    <div id="waitlist-container" style="text-align: center; margin-top: 20px;">
+        <button id="waitlist-button">Join our Client Waitlist</button>
+    </div>
+
+    <!-- Waitlist Form Popup -->
+    <div id="waitlist-popup" class="popup">
+        <div class="popup-content">
+            <h2>Join our Client Waitlist</h2>
+            <form id="waitlist-form">
+                <input type="text" id="waitlist-name" class="input-field" placeholder="Your Name" required />
+                <input type="email" id="waitlist-email" class="input-field" placeholder="Your Email" required />
+                <input type="text" id="waitlist-business" class="input-field" placeholder="Your Business Name" required />
+                <button type="submit" id="submit-waitlist">Submit</button>
+            </form>
         </div>
     </div>
 
     <div class="footer-links">
-        <a href="javascript:void(0);" onclick="openPopup('notice.txt', 'Notice')">Notice</a>
-        <a href="javascript:void(0);" onclick="openPopup('terms_and_agreement.txt', 'Terms and Conditions')">Terms and Conditions</a>
-        <a href="https://thirdeyeai.org" target="_blank">thirdeye ai</a> <!-- New link to LitCode -->
+        <a href="javascript:void(0);" onclick="openPopup('Notice.txt', 'Notice')">Notice</a>
+        <a href="javascript:void(0);" onclick="openPopup('License.txt', 'Terms and Conditions')">Terms and Conditions</a>
+        <a href="https://litcode.org" target="_blank">LitCode by thirdeye</a> <!-- New link to LitCode -->
     </div>
+
+    <!-- Include EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // Initialize EmailJS with the new SDK version
+        (function() {
+            emailjs.init('XrR3OHZNhdSxZU0FJ');  // Replace with your actual public key
+        })();
+
+        const waitlistButton = document.getElementById('waitlist-button');
+        const waitlistPopup = document.getElementById('waitlist-popup');
+        const waitlistForm = document.getElementById('waitlist-form');
+
+        function sendWaitlistEmail(name, email, business, chatHistory) {
+            const templateParams = {
+                name: name,
+                email: email,
+                business: business,
+                chat_history: JSON.stringify(chatHistory, null, 2)
+            };
+
+            // Use your Service ID (Thirdeye AI) and your Template ID from EmailJS
+            emailjs.send('Thirdeye AI', 'template_rve8bhp', templateParams)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                alert('Thank you for joining our waitlist!');
+            }, function(error) {
+                console.error('FAILED...', error);
+                alert('Error: ' + JSON.stringify(error)); // Detailed error alert
+            });
+        }
+
+        // Handle waitlist form submission
+        waitlistForm.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission
+
+            // Collect the form data
+            const name = document.getElementById('waitlist-name').value;
+            const email = document.getElementById('waitlist-email').value;
+            const business = document.getElementById('waitlist-business').value;
+
+            // Collect chat history
+            const chatHistory = [];
+            document.querySelectorAll('#chat-box .message').forEach(message => {
+                chatHistory.push({ sender: message.classList.contains('user') ? 'User' : 'AI', text: message.textContent });
+            });
+
+            // Send the waitlist email via EmailJS
+            sendWaitlistEmail(name, email, business, chatHistory);
+
+            // Close the popup after submission
+            waitlistPopup.style.display = 'none';
+        });
+
+        waitlistButton.addEventListener('click', () => {
+            waitlistPopup.style.display = 'block';  // Show the popup
+        });
+    </script>
 
     <script>
         const chatBox = document.getElementById('chat-box');
-        const whiteEyeLogo = document.getElementById('white-eye-logo');
-        const codingTaskInput = document.getElementById('coding-task-input');
-        const sendButton = document.getElementById('send-button');
-        const addPageButton = document.getElementById('add-page-button');
-        const hamburgerMenu = document.getElementById('hamburger-menu');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarContent = document.getElementById('sidebar-content');
-        const searchTabs = document.getElementById('search-tabs');
-        let feedbackButtonShown = {};
+        const userInput = document.getElementById('user-input');
+        const urlInput = document.getElementById('url-input');
+        const submitButton = document.getElementById('submit-button');
+        const parallaxText = document.getElementById('parallax-text');
+        let businessUrl = '';
         let userIp = '';
-        let currentPage = 'New Page 1';
-        let pageCount = 1;
-        let syntaxHighlightTimeout;
-        let sidebarVisible = false;
+        const triangle = document.getElementById('triangle');
 
-        const chatHistories = {
-            'New Page 1': []
-        };
-
-        function toggleWhiteEyeLogo() {
-            const currentHistory = chatHistories[currentPage]; // Get current page's chat history
-        
-            // Ensure currentHistory exists before checking its length
-            if (currentHistory && currentHistory.length === 0) {
-                whiteEyeLogo.classList.add('visible');
-            } else {
-                whiteEyeLogo.classList.remove('visible');
-                whiteEyeLogo.style.pointerEvents = 'none';
-            }
-        }
-
+        // Fetch the user's IP address using the ipify service
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 userIp = data.ip;
+                console.log("User's IP Address: ", userIp);
             })
             .catch(error => {
                 console.error('Error fetching IP address:', error);
             });
 
-        function appendMessage(sender, text, isCode = false) {
+        function appendMessage(sender, text) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender === 'User' ? 'user' : 'ai');
-        
-            const selectedModel = document.getElementById('model-select').value;
-        
-            if (sender === 'AI') {
-                if (isCode && selectedModel !== 'chat') { 
-                    const preElement = document.createElement('pre');
-                    const codeElement = document.createElement('code');
-                    codeElement.textContent = text;
-                    preElement.appendChild(codeElement);
-                    preElement.style.whiteSpace = 'pre-wrap';
-
-                    messageElement.appendChild(preElement);
-                    hljs.highlightElement(codeElement);
-
-                } else {
-                    messageElement.textContent = text;
-                }
-
-                if (!feedbackButtonShown[currentPage]) {
-                    const feedbackButton = createFeedbackButton();
-                    chatBox.appendChild(feedbackButton);
-                    feedbackButtonShown[currentPage] = true;
-                }
-            } else {
-                messageElement.textContent = text;
-            }
-        
+            messageElement.textContent = text;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTo({
-                top: chatBox.scrollHeight,
-                behavior: 'smooth'
-            });
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function createFeedbackButton() {
-            const feedbackButton = document.createElement('button');
-            feedbackButton.id = 'feedback-button';
-            feedbackButton.textContent = 'Leave Feedback';
-            feedbackButton.addEventListener('click', () => {
-                window.open('feedback_survey.html', 'Litcode Feedback Survey', 'width=800,height=600');
-            });
-            return feedbackButton;
-        }
+        function submitChat() {
+            const message = userInput.value;
 
-        function reapplySyntaxHighlighting() {
-            if (syntaxHighlightTimeout) {
-                clearTimeout(syntaxHighlightTimeout);
-            }
-            syntaxHighlightTimeout = setTimeout(() => {
-                document.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightElement(block);
-                });
-            }, 100);
-        }
+            if (message) {
+                appendMessage('User', message);
+                userInput.value = '';
+                const separator = "§¶∆≈¥";
+                const combinedMessage = `${message}${separator}${businessUrl}`;
 
-        function submitCodingTask() {
-            const codingTask = codingTaskInput.value;
-            const selectedModel = document.getElementById('model-select').value;
-            const activeTab = document.querySelector('.tab.active input.tab-title');
-            const currentTitle = activeTab.value;
-
-            if (codingTask) {
-                appendMessage('User', codingTask);
-                codingTaskInput.value = '';
-
-                chatHistories[currentPage].push({ sender: 'User', text: codingTask, isCode: false });
-
-                fetch('https://4d67-35-204-175-219.ngrok-free.app/chat', {
+                // Send the message to the backend
+                fetch('https://f0a7-35-189-183-248.ngrok-free.app/chat', {  // Replace with your backend URL
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        ip_address: userIp,
-                        message: codingTask,
-                        page: currentPage,
-                        model: selectedModel,
-                        tab_name: currentTitle
+                    body: JSON.stringify({ 
+                        message: combinedMessage,
+                        ip_address: userIp
                     }),
                 })
                 .then(response => response.json())
                 .then(data => {
-                    appendMessage('AI', data.response, true);
-                    chatHistories[currentPage].push({ sender: 'AI', text: data.response, isCode: true });
-
-                    const activeTab = document.querySelector('.tab.active input.tab-title');
-                    if (activeTab) {
-                        activeTab.value = data.tab_title;
-                    }
-                    const sidebarTab = Array.from(sidebarContent.children).find(tab => tab.textContent === currentPage);
-                    if (sidebarTab) {
-                        sidebarTab.textContent = data.tab_title; // Update the sidebar with the new title
-                    }
+                    // Append the AI's response to the chat
+                    appendMessage('AI', data.response);  // Assuming your backend returns { response: "AI's response" }
                 })
                 .catch(error => {
-                    appendMessage('AI', 'We are conducting routine site maintenance and updating features at LitCode by thirdeye. This service will be back online soon.');
+                    console.error('Error:', error);
+                    appendMessage('AI', 'We are conducting maintenance on our chat service, this feature is unavailable right now. Check back in later and learn what Thirdeye can do for you.');
                 });
             }
         }
 
-        sendButton.addEventListener('click', submitCodingTask);
-        codingTaskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                submitCodingTask();
-            }
-        });
-
-        const maxTabWidth = 150;
-        const minTabWidth = 49;
-
-        function resizeTabs() {
-            const tabs = document.querySelectorAll('.tab');
-            const activeTabIndex = Array.from(tabs).findIndex(tab => tab.classList.contains('active'));
-            
-            const chatContainerWidth = document.getElementById('chat-container').offsetWidth;
-            const addPageButtonWidth = document.getElementById('add-page-button').offsetWidth;
-            const availableWidth = chatContainerWidth - addPageButtonWidth - (3 * maxTabWidth);
-
-            let totalTabWidth = 0;
-            tabs.forEach(tab => {
-                totalTabWidth += maxTabWidth;
-            });
-
-            tabs.forEach((tab, index) => {
-                if (totalTabWidth > availableWidth && (index !== activeTabIndex && index !== activeTabIndex - 1 && index !== activeTabIndex + 1)) {
-                    tab.style.width = `${minTabWidth}px`; // Shrink tabs
-                    tab.classList.add('shrunk'); // Add class to hide title
+        // Simulate typing effect for "What is thirdeye"
+        function simulateTyping(text, callback) {
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < text.length) {
+                    userInput.value += text[index];
+                    index++;
                 } else {
-                    tab.style.width = `${maxTabWidth}px`; // Restore full size
-                    tab.classList.remove('shrunk'); // Show title
+                    clearInterval(interval);
+                    if (callback) callback();
                 }
-            });
+            }, 150); // Adjust typing speed here (150ms between each character)
         }
 
-        addPageButton.addEventListener('click', () => {
-            pageCount++;
-            const newTab = document.createElement('div');
-            newTab.classList.add('tab');
-            const newPageName = `New Page ${pageCount}`;
-            newTab.setAttribute('data-page-name', newPageName); // Assign original page name
-            newTab.innerHTML = `<input type="text" value="${newPageName}" class="tab-title" />`;
-
-            document.getElementById('tab-container').insertBefore(newTab, addPageButton);
-            newTab.addEventListener('click', function () {
-                const originalPageName = this.getAttribute('data-page-name');
-                setActiveTab(this, originalPageName);
-            });
-            chatHistories[newPageName] = [];
-            setActiveTab(newTab, newPageName);
-
-            // Create corresponding sidebar tab
-            const sidebarTab = document.createElement('div');
-            sidebarTab.classList.add('sidebar-tab');
-            sidebarTab.textContent = newPageName;
-
-            // Switch tabs when clicking on sidebar
-            sidebarTab.addEventListener('click', () => {
-                setActiveTab(newTab, newPageName);
-                sidebar.classList.remove('open');
-                sidebarVisible = false;
-            });
-
-            // Attach the edit listener to both the tab title and the sidebar tab
-            const tabTitleInput = newTab.querySelector('.tab-title');
-            addTabEditEventListener(tabTitleInput, sidebarTab, newPageName); // Pass the original page name
-
-            sidebarContent.appendChild(sidebarTab);
-
-            resizeTabs();
+        // Automatically start typing "What is thirdeye" after 1 second and send it
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                simulateTyping("What is thirdeye", () => {
+                    submitChat(); // Send the message after typing is done
+                });
+            }, 1000); // 1 second delay before starting to type
         });
 
-        function setActiveTab(tab, pageName) {
-            if (syntaxHighlightTimeout) {
-                clearTimeout(syntaxHighlightTimeout);
-            }
-
-            const activeTab = document.querySelector('.tab.active');
-            if (activeTab) {
-                const activeInput = activeTab.querySelector('input.tab-title');
-                activeTab.classList.remove('active');
-                activeInput.setAttribute('disabled', true);
-            }
-
-            tab.classList.add('active');
-            const currentInput = tab.querySelector('input.tab-title');
-            currentInput.removeAttribute('disabled');
-            currentInput.focus();
-
-            currentPage = pageName;
-
-            loadChatHistory(pageName);
-            
-            resizeTabs();
-        }
-
-        function loadChatHistory(pageName) {
-            console.log('Loading chat history for:', pageName);
-            chatBox.innerHTML = '';
-            const history = chatHistories[pageName] || [];
-            console.log('Chat History Length:', history.length);
-            history.forEach(msg => {
-                appendMessage(msg.sender, msg.text, msg.isCode);
-            });
-
-            reapplySyntaxHighlighting();
-
-            if (feedbackButtonShown[pageName]) {
-                const feedbackButton = createFeedbackButton();
-                chatBox.appendChild(feedbackButton);
-            }
-        }
-
-        function addTabEditEventListener(tabTitle, sidebarTab, originalPageName) {
-            tabTitle.addEventListener('input', function () {
-                console.log('Tab title changed:', tabTitle.value);
-                console.log('Sidebar tab element:', sidebarTab);  // This should log the sidebar tab
-
-                // Update the corresponding sidebar tab title when the user edits the tab title
-                sidebarTab.textContent = tabTitle.value;
-            });
-
-            tabTitle.addEventListener('click', function () {
-                this.removeAttribute('disabled');
-                this.focus();
-            });
-
-            tabTitle.addEventListener('blur', function () {
-                this.setAttribute('disabled', true);
-            });
-
-            tabTitle.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    this.setAttribute('disabled', true);
-                }
-            });
-
-            tabTitle.parentElement.addEventListener('click', function () {
-                setActiveTab(this, originalPageName); // Pass the original page name
-            });
-        }
-
-        const firstTab = document.getElementById('new-page-1');
-        const firstSidebarTab = document.createElement('div'); // Create a sidebar tab for the first tab
-        firstSidebarTab.classList.add('sidebar-tab');
-        firstSidebarTab.textContent = 'New Page 1'; // Initial title for the first tab
-        firstSidebarTab.addEventListener('click', () => {
-            setActiveTab(firstTab, 'New Page 1');
-            sidebar.classList.remove('open');
-            sidebarVisible = false;
-        });
-        
-        sidebarContent.appendChild(firstSidebarTab); // Add first tab to sidebar
-
-        setActiveTab(firstTab, 'New Page 1');
-
-        firstTab.addEventListener('click', () => {
-            setActiveTab(firstTab, 'New Page 1');
+        submitButton.addEventListener('click', () => {
+            submitChat();
         });
 
-        const firstTabTitle = firstTab.querySelector('.tab-title');
-        console.log('First Sidebar tab element:', firstSidebarTab);  // This should log the sidebar tab
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitChat();
+            }
+        });
 
-        addTabEditEventListener(firstTabTitle, firstSidebarTab, 'New Page 1'); // Passing null for sidebar tab initially
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13 || e.keyCode == 9) {
+                businessUrl = urlInput.value;
+                appendMessage('AI', `Business information entered: ${businessUrl}`);
+                urlInput.value = ''; // Clear the field after entry
+            }
+        });
+
+        triangle.addEventListener('click', () => {
+            businessUrl = urlInput.value;
+            appendMessage('AI', `Business information entered: ${businessUrl}`);
+            urlInput.value = ''; // Clear the field after entry
+        });
 
         function openPopup(file, title) {
             fetch(file)
                 .then(response => response.text())
                 .then(data => {
+                    // Create the popup window
                     const popupWindow = window.open('', title, 'width=600,height=400,resizable,scrollbars');
                     popupWindow.document.write(`
                         <html>
-                        <head><title>${title}</title></head>
+                        <head>
+                            <title>${title}</title>
+                        </head>
                         <body>
                             <div class="popup-content">
                                 <h2>${title}</h2>
                                 <div>${data}</div>
-                                <button onclick="window.close()">Close</button>
                             </div>
                         </body>
                         </html>
@@ -828,86 +481,17 @@
                 });
         }
 
-        // Sidebar functionality
-
-        // Toggle the sidebar visibility
-        hamburgerMenu.addEventListener('click', () => {
-            sidebarVisible = !sidebarVisible;
-            sidebar.classList.toggle('open', sidebarVisible);
-        });
-// Add this to handle clicks inside the sidebar, but outside of tabs and search bar
-        sidebar.addEventListener('click', (event) => {
-            const isTab = event.target.classList.contains('sidebar-tab');
-            const isSearchBar = event.target.classList.contains('search-tabs');
-            
-            // If clicked outside the tabs or search bar, close the sidebar
-            if (!isTab && !isSearchBar) {
-                sidebar.classList.remove('open');
-                sidebarVisible = false;
-            }
+        // Parallax effect for the text
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            parallaxText.style.transform = `translateY(${scrolled * -0.5}px) rotate(-90deg)`;
         });
 
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (event) => {
-            if (sidebarVisible && !sidebar.contains(event.target) && !hamburgerMenu.contains(event.target)) {
-                sidebar.classList.remove('open');
-                sidebarVisible = false;
-            }
+        // Scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
         });
-
-        // Populate sidebar with tab titles
-        function populateSidebar() {
-            sidebarContent.innerHTML = '';
-            const tabs = document.querySelectorAll('.tab input.tab-title');
-            tabs.forEach(tab => {
-                const tabTitle = tab.value;
-                const sidebarTab = document.createElement('div');
-                sidebarTab.classList.add('sidebar-tab');
-                sidebarTab.textContent = tabTitle;
-
-                // Switch tabs on click
-                sidebarTab.addEventListener('click', () => {
-                    const parentTab = tab.parentElement;
-                    const originalPageName = parentTab.getAttribute('data-page-name');
-                    setActiveTab(parentTab, originalPageName);
-                    sidebar.classList.remove('open');
-                    sidebarVisible = false;
-                });
-
-                sidebarContent.appendChild(sidebarTab);
-            });
-        }
-
-        // Search functionality
-        searchTabs.addEventListener('input', () => {
-            const query = searchTabs.value.toLowerCase();
-            const sidebarTabs = sidebarContent.querySelectorAll('.sidebar-tab');
-            
-            // Filter through the tab titles
-            sidebarTabs.forEach(tab => {
-                if (tab.textContent.toLowerCase().includes(query)) {
-                    tab.style.display = 'block';
-                } else {
-                    tab.style.display = 'none';
-                }
-            });
-
-            // Search through the chat containers as well
-            Object.keys(chatHistories).forEach(pageName => {
-                const chatHistory = chatHistories[pageName];
-                const matchingChats = chatHistory.filter(msg => msg.text.toLowerCase().includes(query));
-                
-                // If there's a match, show the corresponding tab in the sidebar
-                const sidebarTab = Array.from(sidebarTabs).find(tab => tab.textContent === pageName);
-                if (matchingChats.length > 0) {
-                    sidebarTab.style.display = 'block';
-                }
-            });
-        });
-
-        // Initial population of the sidebar
-        populateSidebar();
-
+        
     </script>
 </body>
 </html>
